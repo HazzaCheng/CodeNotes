@@ -3,7 +3,8 @@
 # Created by HazzaCheng on 2019-07-03
 
 """
-A simple shallow neural network model for planar datasets classification.
+A simple shallow neural network model for planar datasets classification,
+only has one hidden layer.
 """
 
 from planar_utils import sigmoid
@@ -220,7 +221,7 @@ class ShallowNeuralNetWorkModel:
 
         return predictions
 
-    def getModel(self, X, Y, n_h, num_iterations=10000,
+    def get_model(self, X, Y, n_h, num_iterations=10000,
                  learning_rate=1.2, print_cost=False):
         """
         Arguments:

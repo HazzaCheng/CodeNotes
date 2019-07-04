@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sklearn
 
-from planar_data_classification_with_onehidden_layer import ShallowNeuralNetWorkModel
+from shallow_nn_model import ShallowNeuralNetWorkModel
 from planar_utils import load_planar_dataset, plot_decision_boundary
 
 if __name__ == '__main__':
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     for i, n_h in enumerate(hidden_layer_sizes):
         plt.subplot(5, 2, i + 1)
         plt.title('Hidden Layer of size %d' % n_h)
-        parameters = network.getModel(X, Y, n_h, num_iterations=5000)
+        parameters = network.get_model(X, Y, n_h, num_iterations=5000)
         plot_decision_boundary(
             lambda x: network.predict(
                 parameters, x.T), X, Y.flatten())
