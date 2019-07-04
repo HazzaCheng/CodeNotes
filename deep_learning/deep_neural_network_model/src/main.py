@@ -71,10 +71,10 @@ if __name__ == '__main__':
     test with my own picture
     """
     # change this to the name of your image file
-    my_image = "dog.jpg"
+    my_image = "people.jpg"
     # the true class of your image (1 -> cat, 0 -> non-cat)
     my_label_y = [0]
-    fname = "../images/" + my_image
+    fname = "../datasets/" + my_image
     image = np.array(imageio.imread(fname))
 
     image = np.array(imageio.imread(fname, pilmode='RGB'))
@@ -89,7 +89,7 @@ if __name__ == '__main__':
     my_image = "cat.jpg"
     # the true class of your image (1 -> cat, 0 -> non-cat)
     my_label_y = [1]
-    fname = "../images/" + my_image
+    fname = "../datasets/" + my_image
     image = np.array(imageio.imread(fname))
 
     image = np.array(imageio.imread(fname, pilmode='RGB'))
