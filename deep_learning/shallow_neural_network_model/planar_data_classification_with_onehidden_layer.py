@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Created by HazzaCheng on 2019-07-03
-# A simple shallow neural network model for planar data classification.
 
+"""
+A simple shallow neural network model for planar data classification.
+"""
 
 from planar_utils import sigmoid
 from testCases import *
