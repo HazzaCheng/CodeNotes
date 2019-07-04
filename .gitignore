@@ -18,6 +18,9 @@ syntax: glob
 .idea
 *.iml
 
+# pycharm
+__pycache__/
+
 # building
 target
 build
