@@ -49,8 +49,21 @@ if __name__ == '__main__':
         plt.subplot(5, 2, i + 1)
         plt.title('Hidden Layer of size %d' % n_h)
         parameters = network.getModel(X, Y, n_h, num_iterations=5000)
-        plot_decision_boundary(lambda x: network.predict(parameters, x.T), X, Y.flatten())
+        plot_decision_boundary(
+            lambda x: network.predict(
+                parameters, x.T), X, Y.flatten())
         predictions = network.predict(parameters, X)
-        accuracy = float((np.dot(Y, predictions.T) + np.dot(1 - Y, 1 - predictions.T)) / float(Y.size) * 100)
+        accuracy = float(
+            (np.dot(
+                Y,
+                predictions.T) +
+                np.dot(
+                1 -
+                Y,
+                1 -
+                predictions.T)) /
+            float(
+                Y.size) *
+            100)
         print("Accuracy for {} hidden units: {} %".format(n_h, accuracy))
     plt.show()

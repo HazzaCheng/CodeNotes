@@ -42,7 +42,8 @@ class SimpleNeuralNetWorkModel:
                         b2 -- bias vector of shape (n_y, 1)
         """
 
-        # we set up a seed so that your output matches ours although the initialization is random.
+        # we set up a seed so that your output matches ours although the
+        # initialization is random.
         np.random.seed(2)
 
         W1 = np.random.randn(n_h, n_x) * 0.01
@@ -112,8 +113,9 @@ class SimpleNeuralNetWorkModel:
         m = Y.shape[1]  # number of example
         # Compute the cross-entropy cost
         # print(A2)
-        logprobs = np.multiply(Y, np.log(A2)) + np.multiply((1-Y), np.log((1-A2)))
-        cost = -1/m * np.sum(logprobs)
+        logprobs = np.multiply(Y, np.log(A2)) + \
+            np.multiply((1 - Y), np.log((1 - A2)))
+        cost = -1 / m * np.sum(logprobs)
 
         # makes sure cost is the dimension we expect.
         cost = float(np.squeeze(cost))
@@ -208,13 +210,16 @@ class SimpleNeuralNetWorkModel:
         predictions -- vector of predictions of our model (red: 0 / blue: 1)
         """
 
-        # Computes probabilities using forward propagation, and classifies to 0/1 using 0.5 as the threshold.
+        # Computes probabilities using forward propagation, and classifies to
+        # 0/1 using 0.5 as the threshold.
         A2, cache = self.__forward_propagation(X, parameters)
-        predictions = np.array([1 if x > 0.5 else 0 for x in A2.reshape(-1, 1)]).reshape(A2.shape)
+        predictions = np.array(
+            [1 if x > 0.5 else 0 for x in A2.reshape(-1, 1)]).reshape(A2.shape)
 
         return predictions
 
-    def getModel(self, X, Y, n_h, num_iterations=10000, learning_rate=1.2, print_cost=False):
+    def getModel(self, X, Y, n_h, num_iterations=10000,
+                 learning_rate=1.2, print_cost=False):
         """
         Arguments:
         X -- dataset of shape (2, number of examples)
@@ -240,22 +245,25 @@ class SimpleNeuralNetWorkModel:
         # Loop (gradient descent)
         for i in range(0, num_iterations):
 
-            # Forward propagation. Inputs: "X, parameters". Outputs: "A2, cache".
+            # Forward propagation. Inputs: "X, parameters". Outputs: "A2,
+            # cache".
             A2, cache = self.__forward_propagation(X, parameters)
 
             # Cost function. Inputs: "A2, Y, parameters". Outputs: "cost".
             cost = self.__compute_cost(A2, Y)
             # print(cost)
 
-            # Backpropagation. Inputs: "parameters, cache, X, Y". Outputs: "grads".
+            # Backpropagation.
+            # Inputs: "parameters, cache, X, Y". Outputs:"grads".
             grads = self.__backward_propagation(parameters, cache, X, Y)
 
-            # Gradient descent parameter update. Inputs: "parameters, grads". Outputs: "parameters".
-            parameters = self.__update_parameters(parameters, grads, learning_rate)
+            # Gradient descent parameter update.
+            # Inputs: "parameters, grads". Outputs: "parameters".
+            parameters = self.__update_parameters(
+                parameters, grads, learning_rate)
 
             # Print the cost every 1000 iterations
             if print_cost and i % 1000 == 0:
                 print("Cost after iteration %i: %f" % (i, cost))
 
         return parameters
-
