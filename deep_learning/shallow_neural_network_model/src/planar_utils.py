@@ -48,7 +48,7 @@ def load_planar_dataset():
     m = 400  # number of examples
     N = int(m / 2)  # number of points per class
     D = 2  # dimensionality
-    X = np.zeros((m, D))  # data matrix where each row is a single example
+    X = np.zeros((m, D))  # datasets matrix where each row is a single example
     # labels vector (0 for red, 1 for blue)
     Y = np.zeros((m, 1), dtype='uint8')
     a = 4  # maximum ray of the flower

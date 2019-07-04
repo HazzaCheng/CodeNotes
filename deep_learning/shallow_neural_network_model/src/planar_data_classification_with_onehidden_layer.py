@@ -3,7 +3,7 @@
 # Created by HazzaCheng on 2019-07-03
 
 """
-A simple shallow neural network model for planar data classification.
+A simple shallow neural network model for planar datasets classification.
 """
 
 from planar_utils import sigmoid
@@ -68,7 +68,7 @@ class ShallowNeuralNetWorkModel:
     def __forward_propagation(slef, X, parameters):
         """
         Argument:
-        X -- input data of size (n_x, m)
+        X -- input datasets of size (n_x, m)
         parameters -- python dictionary containing your parameters (output of initialization function)
 
         Returns:
@@ -133,7 +133,7 @@ class ShallowNeuralNetWorkModel:
         Arguments:
         parameters -- python dictionary containing our parameters
         cache -- a dictionary containing "Z1", "A1", "Z2" and "A2".
-        X -- input data of shape (2, number of examples)
+        X -- input datasets of shape (2, number of examples)
         Y -- "true" labels vector of shape (1, number of examples)
 
         Returns:
@@ -206,7 +206,7 @@ class ShallowNeuralNetWorkModel:
 
         Arguments:
         parameters -- python dictionary containing your parameters
-        X -- input data of size (n_x, m)
+        X -- input datasets of size (n_x, m)
 
         Returns
         predictions -- vector of predictions of our model (red: 0 / blue: 1)

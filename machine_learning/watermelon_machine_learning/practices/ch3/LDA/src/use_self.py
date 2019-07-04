@@ -149,5 +149,5 @@ def draw_projective_point_on_lda_line(X, y, w):
 
 
 if __name__ == '__main__':
-    X, y = load_data('../data/watermelon_3a.csv', ',')
+    X, y = load_data('../datasets/watermelon_3a.csv', ',')
     linear_discriminant_analysis(X, y)

@@ -41,16 +41,16 @@ class MovieParser(HTMLParser):
                     return attr[1]
             return None
 
-        if tag == 'li' and _attr(attrs, 'data-title') and _attr(attrs, 'data-category') == 'nowplaying':
+        if tag == 'li' and _attr(attrs, 'datasets-title') and _attr(attrs, 'datasets-category') == 'nowplaying':
             movie = {}
-            movie['title'] = _attr(attrs, 'data-title')
-            movie['year'] = _attr(attrs, 'data-release')
-            movie['rate'] = _attr(attrs, 'data-score')
-            movie['rater'] = _attr(attrs, 'data-votecount')
-            movie['duration'] = _attr(attrs, 'data-duration')
-            movie['region'] = _attr(attrs, 'data-region')
-            movie['director'] = _attr(attrs, 'data-director')
-            movie['actors'] = re.split('\s+/\s+', str(_attr(attrs, 'data-actors')))
+            movie['title'] = _attr(attrs, 'datasets-title')
+            movie['year'] = _attr(attrs, 'datasets-release')
+            movie['rate'] = _attr(attrs, 'datasets-score')
+            movie['rater'] = _attr(attrs, 'datasets-votecount')
+            movie['duration'] = _attr(attrs, 'datasets-duration')
+            movie['region'] = _attr(attrs, 'datasets-region')
+            movie['director'] = _attr(attrs, 'datasets-director')
+            movie['actors'] = re.split('\s+/\s+', str(_attr(attrs, 'datasets-actors')))
             self.movies.append(movie)
             self.in_movie = True
         if tag == 'img' and self.in_movie:

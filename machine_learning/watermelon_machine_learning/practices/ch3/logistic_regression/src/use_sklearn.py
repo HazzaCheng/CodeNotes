@@ -63,5 +63,5 @@ def draw_decision_boundary(lr_model, X, y):
 
 
 if __name__ == '__main__':
-    dataset, X_tmp, y_tmp = load_data('../data/watermelon_3a.csv', ',')
+    dataset, X_tmp, y_tmp = load_data('../datasets/watermelon_3a.csv', ',')
     logistic_regression(X_tmp, y_tmp)

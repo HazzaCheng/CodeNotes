@@ -36,6 +36,6 @@ def logistic_regression_leave_one_out(X, y):
 
 if __name__ == '__main__':
     iris_dataset, X_iris, y_iris = load_iris_dataset()
-    transfusion_dataset, X_transfusion, y_transfusion = load_transfusion_dataset('../data/transfusion.data', ',')
+    transfusion_dataset, X_transfusion, y_transfusion = load_transfusion_dataset('../datasets/transfusion.datasets', ',')
     logistic_regression_leave_one_out(X_iris, y_iris)
     logistic_regression_leave_one_out(X_transfusion, y_transfusion)

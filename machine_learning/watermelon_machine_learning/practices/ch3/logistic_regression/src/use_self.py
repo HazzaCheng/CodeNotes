@@ -195,7 +195,7 @@ def print_confusion_matrix(y_pred, y):
 
 
 if __name__ == "__main__":
-    dataset, X_extend, y = load_data('../data/watermelon_3a.csv', ',')
+    dataset, X_extend, y = load_data('../datasets/watermelon_3a.csv', ',')
 
     X_train, X_test, y_train, y_test = model_selection.train_test_split(X_extend, y, test_size=0.5, random_state=0)
 

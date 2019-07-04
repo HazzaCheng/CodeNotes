@@ -50,9 +50,9 @@ def logistic_regression_k_folds(X, y, k):
 
 if __name__ == "__main__":
     iris_dataset, X_iris, y_iris = load_iris_dataset()
-    transfusion_dataset, X_transfusion, y_transfusion = load_transfusion_dataset('../data/transfusion.data', ',')
+    transfusion_dataset, X_transfusion, y_transfusion = load_transfusion_dataset('../datasets/transfusion.datasets', ',')
     draw_iris_pairplot()
-    draw_transfusion_pairplot('../data/transfusion.data')
+    draw_transfusion_pairplot('../datasets/transfusion.datasets')
     # 10 folds
     logistic_regression_k_folds(X_iris, y_iris, 10)
     logistic_regression_k_folds(X_transfusion, y_transfusion, 10)

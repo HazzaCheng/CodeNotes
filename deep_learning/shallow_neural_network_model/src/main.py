@@ -11,10 +11,10 @@ from planar_utils import load_planar_dataset, plot_decision_boundary
 
 if __name__ == '__main__':
     """
-    datasets.
+    datasets
     """
     X, Y = load_planar_dataset()
-    # Visualize the data:
+    # Visualize the datasets:
     plt.scatter(X[0, :], X[1, :], c=Y.flatten(), s=40, cmap=plt.cm.Spectral)
     plt.show()
     print('The shape of X is: ' + str(X.shape))
