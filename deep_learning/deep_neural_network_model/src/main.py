@@ -61,7 +61,7 @@ if __name__ == '__main__':
         train_x,
         train_y,
         layers_dims,
-        num_iterations=25,
+        num_iterations=2500,
         print_cost=True)
     pred_train = model.predict(train_x, train_y, parameters)
     pred_test = model.predict(test_x, test_y, parameters)
@@ -71,15 +71,31 @@ if __name__ == '__main__':
     test with my own picture
     """
     # change this to the name of your image file
-    my_image = "my_image.jpg"
+    my_image = "dog.jpg"
     # the true class of your image (1 -> cat, 0 -> non-cat)
     my_label_y = [0]
     fname = "../images/" + my_image
     image = np.array(imageio.imread(fname))
 
-    image = np.array(ndimage.imread(fname, flatten=False, mode='RGB'))
-    my_image = scipy.misc.imresize(image, size=(num_px, num_px)).reshape((num_px * num_px * 3, 1))
+    image = np.array(imageio.imread(fname, pilmode='RGB'))
+    my_image = np.array(
+        Image.fromarray(image).resize(size=(num_px, num_px))).reshape((num_px * num_px * 3, 1))
     my_predicted_image = model.predict(my_image, my_label_y, parameters)
     plt.imshow(image)
     print("y = " + str(np.squeeze(my_predicted_image)) + ", your L-layer model predicts a \"" + classes[
-        int(np.squeeze(my_predicted_image)),].decode("utf-8") + "\" picture.")
+        int(np.squeeze(my_predicted_image))].decode("utf-8") + "\" picture.")
+
+    # change this to the name of your image file
+    my_image = "cat.jpg"
+    # the true class of your image (1 -> cat, 0 -> non-cat)
+    my_label_y = [1]
+    fname = "../images/" + my_image
+    image = np.array(imageio.imread(fname))
+
+    image = np.array(imageio.imread(fname, pilmode='RGB'))
+    my_image = np.array(
+        Image.fromarray(image).resize(size=(num_px, num_px))).reshape((num_px * num_px * 3, 1))
+    my_predicted_image = model.predict(my_image, my_label_y, parameters)
+    plt.imshow(image)
+    print("y = " + str(np.squeeze(my_predicted_image)) + ", your L-layer model predicts a \"" + classes[
+        int(np.squeeze(my_predicted_image))].decode("utf-8") + "\" picture.")
