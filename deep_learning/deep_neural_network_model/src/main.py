@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Created by HazzaCheng on 2019-07-04
-
+import imageio
 import matplotlib.pyplot as plt
 import numpy as np
+import scipy.misc
+from PIL import Image
+from scipy import ndimage
 
-from dnn_utils import load_data
+from deep_nn_model import DeepNeuralNetworkModel
+from dnn_utils import load_data, print_mislabeled_images
 
 if __name__ == '__main__':
     # set default configurations of plots
@@ -47,3 +51,35 @@ if __name__ == '__main__':
     test_x = test_x_flatten / 255.
     print("train_x's shape: " + str(train_x.shape))
     print("test_x's shape: " + str(test_x.shape))
+
+    """
+    train the model
+    """
+    model = DeepNeuralNetworkModel()
+    layers_dims = [12288, 20, 7, 5, 1]
+    parameters = model.get_L_layer_model(
+        train_x,
+        train_y,
+        layers_dims,
+        num_iterations=25,
+        print_cost=True)
+    pred_train = model.predict(train_x, train_y, parameters)
+    pred_test = model.predict(test_x, test_y, parameters)
+    print_mislabeled_images(classes, test_x, test_y, pred_test)
+
+    """
+    test with my own picture
+    """
+    # change this to the name of your image file
+    my_image = "my_image.jpg"
+    # the true class of your image (1 -> cat, 0 -> non-cat)
+    my_label_y = [0]
+    fname = "../images/" + my_image
+    image = np.array(imageio.imread(fname))
+
+    image = np.array(ndimage.imread(fname, flatten=False, mode='RGB'))
+    my_image = scipy.misc.imresize(image, size=(num_px, num_px)).reshape((num_px * num_px * 3, 1))
+    my_predicted_image = model.predict(my_image, my_label_y, parameters)
+    plt.imshow(image)
+    print("y = " + str(np.squeeze(my_predicted_image)) + ", your L-layer model predicts a \"" + classes[
+        int(np.squeeze(my_predicted_image)),].decode("utf-8") + "\" picture.")

@@ -8,7 +8,12 @@ A simple deep neural network with L layers, use relu or sigmoid activation funct
 
 import numpy as np
 
-from src.dnn_utils import sigmoid, relu, relu_backward, sigmoid_backward
+from dnn_utils import sigmoid, relu, relu_backward, sigmoid_backward
+import matplotlib.pyplot as plt
+
+from testCases import linear_forward_test_case, linear_activation_forward_test_case, L_model_forward_test_case_2hidden, \
+    compute_cost_test_case, linear_backward_test_case, linear_activation_backward_test_case, L_model_backward_test_case, \
+    print_grads, update_parameters_test_case
 
 
 class DeepNeuralNetworkModel:
@@ -23,14 +28,14 @@ class DeepNeuralNetworkModel:
                         bl -- bias vector of shape (layer_dims[l], 1)
         """
 
-        np.random.seed(3)
+        np.random.seed(1)
         parameters = {}
         L = len(layer_dims)  # number of layers in the network
 
         for l in range(1, L):
             parameters['W' + str(l)] = np.random.randn(layer_dims[l],
-                                                       layer_dims[l - 1]) * 0.01
-            parameters['b' + str(l)] = np.zeros((layer_dims[l], 1)) * 0.01
+                                                       layer_dims[l - 1]) / np.sqrt(layer_dims[l - 1])
+            parameters['b' + str(l)] = np.zeros((layer_dims[l], 1))
 
             assert (parameters['W' + str(l)].shape ==
                     (layer_dims[l], layer_dims[l - 1]))
@@ -272,8 +277,10 @@ class DeepNeuralNetworkModel:
 
         # Update rule for each parameter. Use a for loop.
         for l in range(L):
-            parameters["W" + str(l + 1)] -= learning_rate * grads["dW" + str(l + 1)]
-            parameters["b" + str(l + 1)] -= learning_rate * grads["db" + str(l + 1)]
+            parameters["W" + str(l + 1)] -= learning_rate * \
+                grads["dW" + str(l + 1)]
+            parameters["b" + str(l + 1)] -= learning_rate * \
+                grads["db" + str(l + 1)]
         return parameters
 
     def predict(self, X, y, parameters):
@@ -310,7 +317,8 @@ class DeepNeuralNetworkModel:
 
         return p
 
-    def get_L_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000, print_cost=False):  # lr was 0.009
+    def get_L_layer_model(self, X, Y, layers_dims, learning_rate=0.0075,
+                          num_iterations=3000, print_cost=False):
         """
         Implements a L-layer neural network: [LINEAR->RELU]*(L-1)->LINEAR->SIGMOID.
 
@@ -330,32 +338,23 @@ class DeepNeuralNetworkModel:
         costs = []  # keep track of cost
 
         # Parameters initialization. (≈ 1 line of code)
-        ### START CODE HERE ###
-        parameters = initialize_parameters_deep(layers_dims)
-        ### END CODE HERE ###
+        parameters = self.__initialize_parameters_deep(layers_dims)
 
         # Loop (gradient descent)
         for i in range(0, num_iterations):
 
             # Forward propagation: [LINEAR -> RELU]*(L-1) -> LINEAR -> SIGMOID.
-            ### START CODE HERE ### (≈ 1 line of code)
-            AL, caches = L_model_forward(X, parameters)
-            ### END CODE HERE ###
+            AL, caches = self.__L_model_forward(X, parameters)
 
             # Compute cost.
-            ### START CODE HERE ### (≈ 1 line of code)
-            cost = compute_cost(AL, Y)
-            ### END CODE HERE ###
+            cost = self.__compute_cost(AL, Y)
 
             # Backward propagation.
-            ### START CODE HERE ### (≈ 1 line of code)
-            grads = L_model_backward(AL, Y, caches)
-            ### END CODE HERE ###
+            grads = self.__L_model_backward(AL, Y, caches)
 
             # Update parameters.
-            ### START CODE HERE ### (≈ 1 line of code)
-            parameters = update_parameters(parameters, grads, learning_rate)
-            ### END CODE HERE ###
+            parameters = self.__update_parameters(
+                parameters, grads, learning_rate)
 
             # Print the cost every 100 training example
             if print_cost and i % 100 == 0:
