@@ -6,9 +6,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sklearn
 
-from planar_data_classification_with_onehidden_layer import SimpleNeuralNetWorkModel, nn_model_test_case
+from planar_data_classification_with_onehidden_layer import ShallowNeuralNetWorkModel
 from planar_utils import load_planar_dataset, plot_decision_boundary
-from testCases import predict_test_case
 
 if __name__ == '__main__':
     """
@@ -41,7 +40,7 @@ if __name__ == '__main__':
     """
     neural network model
     """
-    network = SimpleNeuralNetWorkModel()
+    network = ShallowNeuralNetWorkModel()
 
     plt.figure(figsize=(16, 32))
     hidden_layer_sizes = [1, 2, 3, 4, 5, 10, 20, 50, 70, 100]

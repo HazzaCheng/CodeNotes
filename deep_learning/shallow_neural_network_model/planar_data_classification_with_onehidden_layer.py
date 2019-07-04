@@ -8,7 +8,7 @@ from planar_utils import sigmoid
 from testCases import *
 
 
-class SimpleNeuralNetWorkModel:
+class ShallowNeuralNetWorkModel:
 
     def __layer_sizes(self, X, Y):
         """
