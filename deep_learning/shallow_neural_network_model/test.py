@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sklearn
 
-from nn_model import SimpleNeuralNetWorkModel, nn_model_test_case
+from planar_data_classification_with_onehidden_layer import SimpleNeuralNetWorkModel, nn_model_test_case
 from planar_utils import load_planar_dataset, plot_decision_boundary
 from testCases import predict_test_case
 
