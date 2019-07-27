@@ -49,22 +49,61 @@ if __name__ == '__main__':
     # Standardize data to have feature values between 0 and 1.
     train_x = train_x_flatten / 255.
     test_x = test_x_flatten / 255.
+    train_x = train_x[:, :20]
+    train_y = train_y[:, :20]
     print("train_x's shape: " + str(train_x.shape))
     print("test_x's shape: " + str(test_x.shape))
 
     """
     train the model
     """
-    model = DeepNeuralNetworkModel()
-    layers_dims = [12288, 20, 10, 7, 5, 1]
-    parameters = model.get_L_layer_model(
-        train_x,
-        train_y,
-        layers_dims,
-        num_iterations=2500,
-        print_cost=True)
-    pred_train = model.predict(train_x, train_y, parameters)
-    pred_test = model.predict(test_x, test_y, parameters)
+    # layers_dims = [12288, 20, 10, 7, 5, 1]
+    layers_dims = [12288, 3, 1]
+    # without regulation, without dropout
+    print("-" * 20)
+    print("without regulation, without dropout")
+    print("-" * 20)
+    dnn = DeepNeuralNetworkModel(layers_dims=layers_dims,
+                                 parameters_initialization_method="he",
+                                 lambd=0,
+                                 keep_prob=1.0,
+                                 learning_rate=0.0075,
+                                 num_iterations=3000,
+                                 gradient_check=True,
+                                 print_cost=True)
+    model = dnn.fit(train_x, train_y)
+    pred_train = model.predict(train_x, train_y)
+    pred_test = model.predict(test_x, test_y)
+    print_mislabeled_images(classes, test_x, test_y, pred_test)
+    # regulation
+    print("-" * 20)
+    print("with regulation")
+    print("-" * 20)
+    dnn = DeepNeuralNetworkModel(layers_dims=layers_dims,
+                                 parameters_initialization_method="he",
+                                 lambd=50,
+                                 keep_prob=1.0,
+                                 learning_rate=0.0075,
+                                 num_iterations=3000,
+                                 print_cost=True)
+    model = dnn.fit(train_x, train_y)
+    pred_train = model.predict(train_x, train_y)
+    pred_test = model.predict(test_x, test_y)
+    print_mislabeled_images(classes, test_x, test_y, pred_test)
+    # dropout
+    print("-" * 20)
+    print("with dropout")
+    print("-" * 20)
+    dnn = DeepNeuralNetworkModel(layers_dims=layers_dims,
+                                 parameters_initialization_method="he",
+                                 lambd=0,
+                                 keep_prob=0.5,
+                                 learning_rate=0.0075,
+                                 num_iterations=3000,
+                                 print_cost=True)
+    model = dnn.fit(train_x, train_y)
+    pred_train = model.predict(train_x, train_y)
+    pred_test = model.predict(test_x, test_y)
     print_mislabeled_images(classes, test_x, test_y, pred_test)
 
     """
@@ -80,7 +119,7 @@ if __name__ == '__main__':
     image = np.array(imageio.imread(fname, pilmode='RGB'))
     my_image = np.array(
         Image.fromarray(image).resize(size=(num_px, num_px))).reshape((num_px * num_px * 3, 1))
-    my_predicted_image = model.predict(my_image, my_label_y, parameters)
+    my_predicted_image = model.predict(my_image, my_label_y)
     plt.imshow(image)
     print("y = " + str(np.squeeze(my_predicted_image)) + ", your L-layer model predicts a \"" + classes[
         int(np.squeeze(my_predicted_image))].decode("utf-8") + "\" picture.")
@@ -95,7 +134,7 @@ if __name__ == '__main__':
     image = np.array(imageio.imread(fname, pilmode='RGB'))
     my_image = np.array(
         Image.fromarray(image).resize(size=(num_px, num_px))).reshape((num_px * num_px * 3, 1))
-    my_predicted_image = model.predict(my_image, my_label_y, parameters)
+    my_predicted_image = model.predict(my_image, my_label_y)
     plt.imshow(image)
     print("y = " + str(np.squeeze(my_predicted_image)) + ", your L-layer model predicts a \"" + classes[
         int(np.squeeze(my_predicted_image))].decode("utf-8") + "\" picture.")

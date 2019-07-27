@@ -131,3 +131,64 @@ def print_mislabeled_images(classes, X, y, p):
             "Prediction: " + classes[int(p[0, index])].decode("utf-8") + " \n Class: " + classes[y[0, index]].decode(
                 "utf-8"))
     plt.show()
+
+
+def dictionary_to_vector(parameters):
+    """
+    Roll all our parameters dictionary into a single vector satisfying our specific required shape.
+    """
+    keys = []
+    count = 0
+    layers_num = len(parameters) // 2
+    for key in np.array([["W{}".format(i), "b{}".format(i)] for i in range(1, layers_num + 1)]).flatten():
+
+        # flatten parameter
+        new_vector = np.reshape(parameters[key], (-1, 1))
+        keys = keys + [key] * new_vector.shape[0]
+
+        if count == 0:
+            theta = new_vector
+        else:
+            theta = np.concatenate((theta, new_vector), axis=0)
+        count = count + 1
+
+    return theta, keys
+
+
+def vector_to_dictionary(theta, layers_dims):
+    """
+    Unroll all our parameters dictionary from a single vector satisfying our specific required shape.
+    """
+    parameters = {}
+    layers_num = len(layers_dims)
+    cnt = 0
+    for l in range(1, layers_num):
+        n = layers_dims[l] * layers_dims[l - 1]
+        parameters["W{}".format(l)] = theta[cnt:cnt + n].reshape((layers_dims[l], layers_dims[l - 1]))
+        cnt += n
+        n = layers_dims[l]
+        parameters["b{}".format(l)] = theta[cnt:cnt + n].reshape((layers_dims[l], 1))
+        cnt += n
+
+    return parameters
+
+
+def gradients_to_vector(gradients):
+    """
+    Roll all our gradients dictionary into a single vector satisfying our specific required shape.
+    """
+
+    count = 0
+    layers_num = len(gradients) // 3
+    for key in np.array([["dW{}".format(i), "db{}".format(i)] for i in range(1, layers_num + 1)]).flatten():
+
+        # flatten parameter
+        new_vector = np.reshape(gradients[key], (-1, 1))
+
+        if count == 0:
+            theta = new_vector
+        else:
+            theta = np.concatenate((theta, new_vector), axis=0)
+        count = count + 1
+
+    return theta
