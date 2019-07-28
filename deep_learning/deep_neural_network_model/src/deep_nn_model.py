@@ -9,7 +9,7 @@ A simple deep neural network with L layers, use relu or sigmoid activation funct
 import numpy as np
 
 from dnn_utils import sigmoid, relu, relu_backward, sigmoid_backward, dictionary_to_vector, gradients_to_vector, \
-    vector_to_dictionary
+    vector_to_dictionary, random_mini_batches
 import matplotlib.pyplot as plt
 
 from initialize_parameters import initialize_parameters_zeros, initialize_parameters_random, initialize_parameters_he
@@ -33,6 +33,7 @@ class DeepNeuralNetworkModel:
                  keep_prob=1.0,
                  learning_rate=0.0075,
                  num_iterations=3000,
+                 mini_batch_size=64,
                  print_cost=False,
                  gradient_check=False,
                  random_state=42
@@ -47,6 +48,7 @@ class DeepNeuralNetworkModel:
         self.beta2 = beta2
         self.learning_rate = learning_rate
         self.num_iterations = num_iterations
+        self.mini_batch_size = mini_batch_size
         self.print_cost = print_cost
         self.gradient_check = gradient_check
         self.random_state = random_state
@@ -385,7 +387,7 @@ class DeepNeuralNetworkModel:
         p = np.zeros((1, m))
 
         # Forward propagation
-        probas, caches = self.__forward_propagation(X)
+        probas, caches = self.__forward_propagation(X, self.parameters)
 
         # convert probas to 0/1 predictions
         for i in range(0, probas.shape[1]):
@@ -415,29 +417,33 @@ class DeepNeuralNetworkModel:
         # Loop (gradient descent)
         for i in range(0, self.num_iterations):
 
-            # Forward propagation: LINEAR -> RELU -> LINEAR -> RELU -> LINEAR -> SIGMOID.
-            if self.keep_prob == 1:
-                AL, cache = self.__forward_propagation(self.X, self.parameters)
-            else:
-                AL, cache = self.__forward_propagation_with_dropout(self.X, self.parameters)
+            self.random_state = self.random_state + 1
+            minibatches = random_mini_batches(self.X, self.Y, self.mini_batch_size, self.random_state)
+            cost = 0
+            for minibatch in minibatches:
+                # Forward propagation: LINEAR -> RELU -> LINEAR -> RELU -> LINEAR -> SIGMOID.
+                if self.keep_prob == 1:
+                    AL, cache = self.__forward_propagation(self.X, self.parameters)
+                else:
+                    AL, cache = self.__forward_propagation_with_dropout(self.X, self.parameters)
 
-            # Cost function
-            cost = self.__compute_cost(AL)
+                # Cost function
+                cost = cost + self.__compute_cost(AL)
 
-            # Backward propagation.
-            # but this assignment will only explore one at a time
-            if self.keep_prob == 1:
-                grads = self.__backward_propagation(AL, cache)
-            else:
-                grads = self.__backward_propagation_with_dropout(AL, cache)
+                # Backward propagation.
+                # but this assignment will only explore one at a time
+                if self.keep_prob == 1:
+                    grads = self.__backward_propagation(AL, cache)
+                else:
+                    grads = self.__backward_propagation_with_dropout(AL, cache)
 
-            # Update parameters.
-            self.__update_parameters(grads)
+                # Update parameters.
+                self.__update_parameters(grads)
 
-            # gradients check
-            if self.keep_prob == 1 and self.gradient_check:
-                if i % 100 == 0:
-                    diff = self.__check_gradient(grads)
+                # gradients check
+                if self.keep_prob == 1 and self.gradient_check:
+                    if i % 100 == 0:
+                        diff = self.__check_gradient(grads)
 
             # Print the cost every 100 training iterations
             if self.print_cost and i % 100 == 0:
@@ -480,8 +486,6 @@ class DeepNeuralNetworkModel:
             J_minus[i] = self.__compute_cost(AL2)
 
             gradapprox[i] = (J_plus[i] - J_minus[i]) / (2 * epsilon)
-            if i % 1000 == 0:
-                print(i)
 
         numerator = np.linalg.norm(gradapprox - grad)
         denominator = np.linalg.norm(grad) + np.linalg.norm(gradapprox)

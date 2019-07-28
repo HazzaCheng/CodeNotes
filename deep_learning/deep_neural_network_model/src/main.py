@@ -57,8 +57,8 @@ if __name__ == '__main__':
     """
     train the model
     """
-    # layers_dims = [12288, 20, 10, 7, 5, 1]
-    layers_dims = [12288, 3, 1]
+    layers_dims = [12288, 20, 10, 7, 5, 1]
+    # layers_dims = [12288, 3, 1]
     # without regulation, without dropout
     print("-" * 20)
     print("without regulation, without dropout")
