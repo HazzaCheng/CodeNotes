@@ -437,13 +437,13 @@ class DeepNeuralNetworkModel:
                 else:
                     grads = self.__backward_propagation_with_dropout(AL, cache)
 
-                # Update parameters.
-                self.__update_parameters(grads)
-
                 # gradients check
                 if self.keep_prob == 1 and self.gradient_check:
                     if i % 100 == 0:
                         diff = self.__check_gradient(grads)
+
+                # Update parameters.
+                self.__update_parameters(grads)
 
             # Print the cost every 100 training iterations
             if self.print_cost and i % 100 == 0:
